@@ -8,5 +8,6 @@ class SalaService {
       final db = await DatabaseHelper.instance.database;
      return db.insert('sala',  s.toMap() );
     }
-   
+
+
 }

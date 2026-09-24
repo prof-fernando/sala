@@ -13,7 +13,7 @@ class Sala {
               'id' : this.id,
                'nome' : this.nome,
                'capacidade' : this.capacidade,
-               'disponivel' : this.disponivel 
+               'disponivel' : this.disponivel ? 1 : 0
               };
     }
    
