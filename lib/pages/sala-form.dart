@@ -5,7 +5,8 @@ import 'package:sala_app/model/sala.dart';
 import 'package:sala_app/service/sala-service.dart';
 
 class SalaForm extends StatefulWidget {
-  const SalaForm({super.key});
+  final Sala? sala;
+  const SalaForm({super.key , this.sala });
 
   @override
   State<SalaForm> createState() => _SalaFormState();
@@ -16,8 +17,20 @@ class _SalaFormState extends State<SalaForm> {
   final _txtNome = TextEditingController();
   final _txtCap = TextEditingController();
   bool _disponivel = true;
+  int? _id;
 
   final _service = SalaService();
+  
+  @override
+  void initState() {
+    super.initState();
+    if(widget.sala != null){
+      _txtNome.text = widget.sala!.nome;
+      _txtCap.text =  widget.sala!.capacidade.toString();
+      _disponivel =  widget.sala!.disponivel;
+      _id = widget.sala!.id;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,14 +88,16 @@ class _SalaFormState extends State<SalaForm> {
               ),
 
               SizedBox(height: 20.0,),
-              ElevatedButton(onPressed: (){
+              ElevatedButton(onPressed: () async {
                  if ( _form.currentState!.validate()) {
                   Sala s = Sala( nome:   _txtNome.value.text,
                     capacidade :  int.parse( _txtCap.value.text ),
-                    disponivel : _disponivel
+                    disponivel : _disponivel,
+                    id: _id != null ? _id : null
                    );
 
-                  _service.gravar(s );
+                 _id = await _service.gravar(s );
+                 
                   
                  }
               } , child: Text('Salvar') )
